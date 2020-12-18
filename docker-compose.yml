@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  courses:
+    tty: true
+    stdin_open: true
+    user: ${UID}:${GID}
+    container_name: courses
+    build:
+      context: .
+    ports:
+      - 3010:3000
+    volumes:
+      - .:/app
+      - ./node_modules:/app/node_modules
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.courses.loadbalancer.server.port=3000
+      # http with redirection
+      - traefik.http.routers.courses.entrypoints=web
+      - traefik.http.routers.courses.rule=Host(`react.mastered.com`)
+      - traefik.http.routers.courses.middlewares=redirect-middleware
+      - traefik.http.middlewares.redirect-middleware.redirectscheme.scheme=https
+      # https
+      - traefik.http.routers.coursessecure.entrypoints=websecure
+      - traefik.http.routers.coursessecure.tls=true
+      - traefik.http.routers.coursessecure.rule=Host(`react.mastered.com`)
+    networks:
+      - mastered
+networks:
+  mastered:
+    name: mastered
+

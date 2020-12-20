@@ -8,13 +8,13 @@ services:
     build:
       context: .
     ports:
-      - 3010:3000
+      - 3010:3010
     volumes:
       - .:/app
       - ./node_modules:/app/node_modules
     labels:
       - traefik.enable=true
-      - traefik.http.services.courses.loadbalancer.server.port=3000
+      - traefik.http.services.courses.loadbalancer.server.port=3010
       # http with redirection
       - traefik.http.routers.courses.entrypoints=web
       - traefik.http.routers.courses.rule=Host(`react.mastered.com`)

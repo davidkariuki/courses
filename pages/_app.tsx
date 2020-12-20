@@ -3,6 +3,8 @@ import Head from "next/head"
 import { AppProps } from "next/app"
 import { ThemeProvider } from "@material-ui/core/styles"
 import CssBaseline from "@material-ui/core/CssBaseline"
+import { Provider } from "next-auth/client"
+
 import theme from "../theme"
 
 export default function MyApp(props: AppProps) {
@@ -17,7 +19,7 @@ export default function MyApp(props: AppProps) {
   }, [])
 
   return (
-    <React.Fragment>
+    <Provider session={pageProps.session}>
       <Head>
         <title>My page</title>
         <meta
@@ -30,6 +32,6 @@ export default function MyApp(props: AppProps) {
         <CssBaseline />
         <Component {...pageProps} />
       </ThemeProvider>
-    </React.Fragment>
+    </Provider>
   )
 }

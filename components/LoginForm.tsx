@@ -2,6 +2,7 @@ import { FC } from "react"
 import { Formik, Field, Form, FormikHelpers } from "formik"
 import { TextField } from "formik-material-ui"
 import { Button, Typography } from "@material-ui/core"
+import { signIn } from "next-auth/client"
 
 interface Values {
   email: string
@@ -20,7 +21,7 @@ const LoginForm: FC<FormProps> = ({ className }) => {
         password: "",
       }}
       onSubmit={(values: Values, { setSubmitting }: FormikHelpers<Values>) => {
-        console.log(JSON.stringify(values))
+        signIn("credentials", { ...values, callbackUrl: "/" })
         setSubmitting(false)
       }}
       validate={(values) => {

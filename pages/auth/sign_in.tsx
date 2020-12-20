@@ -1,9 +1,11 @@
 import Head from "next/head"
 import { FC } from "react"
 import { createStyles, makeStyles, Container, Theme } from "@material-ui/core"
+import { useSession } from "next-auth/client"
+import { useRouter } from "next/router"
 
-import Layout from "../components/Layout"
-import LoginForm from "../components/LoginForm"
+import Layout from "../../components/Layout"
+import LoginForm from "../../components/LoginForm"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,15 +31,25 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const SignIn: FC = () => {
   const classes = useStyles()
+  const [session] = useSession()
+  const router = useRouter()
+
+  if (session) {
+    router.push("/")
+  }
 
   return (
     <Layout>
       <Head>
-        <title>Sign In</title>
+        <title>Mastered | Sign In</title>
       </Head>
 
       <Container maxWidth="sm" className={classes.container}>
-        <LoginForm className={classes.form} />
+        {!session && (
+          <>
+            <LoginForm className={classes.form} />
+          </>
+        )}
       </Container>
     </Layout>
   )

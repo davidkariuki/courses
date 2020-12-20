@@ -1,8 +1,12 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next"
 import NextAuth from "next-auth"
 import Providers from "next-auth/providers"
+//import bcrypt from "bcryptjs"
 
 const options = {
+  pages: {
+    signIn: "/auth/sign_in",
+  },
   providers: [
     Providers.Credentials({
       name: "Credentials",
@@ -13,6 +17,9 @@ const options = {
       authorize: async (credentials) => {
         const { email, password } = credentials
         const user = { id: 1, name: password, email: email }
+
+        // get hash from User#encrypted_password
+        // bcrypt.compareSync(password, hash)
 
         if (user) {
           return Promise.resolve(user)

@@ -1,4 +1,4 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next"
+import type { NextApiHandler, NextApiRequest, NextApiResponse } from "next"
 import NextAuth from "next-auth"
 import Providers from "next-auth/providers"
 //import bcrypt from "bcryptjs"

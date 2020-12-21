@@ -4,11 +4,11 @@ import { useSession } from "next-auth/client"
 import { useRouter } from "next/router"
 import { Container } from "@material-ui/core"
 
-import Layout from "../../components/Layout"
-import LoginForm from "../../components/LoginForm"
-import useStyles from "../../styles"
+import Layout from "../../../components/Layout"
+import ResetPasswordForm from "../../../components/ResetPasswordForm"
+import useStyles from "../../../styles"
 
-const SignIn: FC = () => {
+const ChangePassword: FC = () => {
   const classes = useStyles()
   const [session] = useSession()
   const router = useRouter()
@@ -20,14 +20,14 @@ const SignIn: FC = () => {
   return (
     <Layout>
       <Head>
-        <title>Mastered | Sign In</title>
+        <title>Mastered | Reset Password</title>
       </Head>
 
       <Container maxWidth="sm" className={classes.container}>
-        {!session && <LoginForm />}
+        {!session && <ResetPasswordForm />}
       </Container>
     </Layout>
   )
 }
 
-export default SignIn
+export default ChangePassword

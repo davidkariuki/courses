@@ -2,7 +2,6 @@ import { FC } from "react"
 import { Formik, Field, Form, FormikHelpers } from "formik"
 import { TextField } from "formik-material-ui"
 import { Button, Typography } from "@material-ui/core"
-import { signIn } from "next-auth/client"
 
 import useStyles from "../styles"
 
@@ -19,7 +18,10 @@ const ResetPasswordForm: FC = () => {
         email: "",
       }}
       onSubmit={(values: Values, { setSubmitting }: FormikHelpers<Values>) => {
-        signIn("credentials", { ...values, callbackUrl: "/" })
+        fetch("/api/passwords/reset", {
+          method: "POST",
+          body: JSON.stringify(values),
+        })
         setSubmitting(false)
       }}
       validate={(values) => {

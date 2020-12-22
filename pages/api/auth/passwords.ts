@@ -1,17 +1,25 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next"
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
+import { sendResetPasswordEmail } from "../../../middleware/sendgrid"
+
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const {
-    query: { email },
+    body: { email, html },
     method,
   } = req
 
   if (method === "POST") {
-    res.statusCode = 200
-    res.json({ email })
+    const sent = await sendResetPasswordEmail({
+      to: email,
+      html,
+    })
+
+    res.setHeader("Content-Type", "application/json")
+    res.status(200).json({ sent })
   } else {
     res.setHeader("Allow", ["POST"])
     res.status(405).end(`Method ${method} not allowed`)
   }
 }
+
+export default handler

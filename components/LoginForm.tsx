@@ -21,7 +21,10 @@ const LoginForm: FC = () => {
         password: "",
       }}
       onSubmit={(values: Values, { setSubmitting }: FormikHelpers<Values>) => {
-        signIn("credentials", { ...values, callbackUrl: "/" })
+        signIn("credentials", {
+          ...values,
+          callbackUrl: `${process.env.NEXT_PUBLIC_HOST}/`,
+        })
         setSubmitting(false)
       }}
       validate={(values) => {

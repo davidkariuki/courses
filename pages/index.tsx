@@ -1,23 +1,11 @@
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { useSession } from "next-auth/client"
-import {
-  Typography,
-  Container,
-  makeStyles,
-  createStyles,
-} from "@material-ui/core"
+import { Typography, Container } from "@material-ui/core"
 
 import Layout from "../components/Layout"
+import useStyles from "../styles"
 //import { GetServerSideProps } from "next"
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    container: {
-      flexGrow: 1,
-    },
-  })
-)
 
 export default function Home() {
   const styles = useStyles()
@@ -39,7 +27,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container maxWidth="xl" className={styles.container}>
+      <Container maxWidth="xl" className={styles.homeContainer}>
         <Typography variant="h4">Home</Typography>
       </Container>
     </Layout>

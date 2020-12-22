@@ -36,7 +36,7 @@ const TopBar: FC = () => {
 
   const onSignOutClick = (_e: MouseEvent) => {
     setAnchorEl(null)
-    signOut()
+    signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_HOST}/auth/sign_in` })
   }
 
   return (

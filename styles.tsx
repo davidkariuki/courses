@@ -2,6 +2,10 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    homeContainer: {
+      flexGrow: 1,
+      display: "flex",
+    },
     container: {
       flexGrow: 1,
       display: "flex",

@@ -2,10 +2,8 @@ import { FC } from "react"
 import { Formik, Field, Form, FormikHelpers } from "formik"
 import { TextField } from "formik-material-ui"
 import { Button, Typography } from "@material-ui/core"
-import ReactDOMServer from "react-dom/server"
 
 import useStyles from "../styles"
-import ResetPassword from "./Email/ResetPassword"
 
 interface Values {
   email: string
@@ -13,9 +11,6 @@ interface Values {
 
 const ResetPasswordForm: FC = () => {
   const classes = useStyles()
-  const html = ReactDOMServer.renderToStaticMarkup(
-    <ResetPassword code="fluff" name="David" />
-  )
 
   return (
     <Formik
@@ -26,7 +21,7 @@ const ResetPasswordForm: FC = () => {
         fetch("/api/auth/passwords", {
           headers: { "Content-Type": "application/json" },
           method: "POST",
-          body: JSON.stringify({ ...values, html }),
+          body: JSON.stringify(values),
         })
         setSubmitting(false)
       }}

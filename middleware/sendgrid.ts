@@ -2,16 +2,20 @@ import mail from "@sendgrid/mail"
 
 mail.setApiKey(process.env.SENDGRID_API_KEY!)
 
-interface ResetPasswordOpts {
+interface MailOpts {
   to: string
-  html: string
+  name: string
+  url: string
 }
 
-export const sendResetPasswordEmail = async (opts: ResetPasswordOpts) => {
+export const sendResetPasswordEmail = async (opts: MailOpts) => {
+  const { to, name, url } = opts
+
   const mailOpts = {
-    ...opts,
-    from: "tech@mastered.com",
-    subject: "Reset your password",
+    to,
+    from: process.env.SENDGRID_DEFAULT_SENDER,
+    templateId: process.env.RESET_PWD_EMAIL_TEMPLATE_ID,
+    dynamicTemplateData: { name, url },
   }
 
   return mail
@@ -19,8 +23,7 @@ export const sendResetPasswordEmail = async (opts: ResetPasswordOpts) => {
     .then(() => {
       return true
     })
-    .catch((error) => {
-      console.log("error: ", error)
+    .catch(() => {
       return false
     })
 }

@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const opts = {
       to: email,
       name: name,
-      url: `${process.env.NEXT_PUBLIC_HOST}/auth/passwords/${code}`,
+      url: `${process.env.NEXT_PUBLIC_WEB_URI}/auth/passwords/${code}`,
     }
 
     const sent = await sendResetPasswordEmail(opts)

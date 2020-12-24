@@ -1,4 +1,5 @@
 import { FC } from "react"
+import { useRouter } from "next/router"
 import { Formik, Field, Form, FormikHelpers } from "formik"
 import { TextField } from "formik-material-ui"
 import { Button, Typography } from "@material-ui/core"
@@ -9,8 +10,9 @@ interface Values {
   email: string
 }
 
-const ResetPasswordForm: FC = () => {
+const EmailForm: FC = () => {
   const classes = useStyles()
+  const router = useRouter()
 
   return (
     <Formik
@@ -22,6 +24,9 @@ const ResetPasswordForm: FC = () => {
           headers: { "Content-Type": "application/json" },
           method: "POST",
           body: JSON.stringify(values),
+        }).then((res) => {
+          console.log("response: ", res.status)
+          router.push("/auth/sign_in")
         })
         setSubmitting(false)
       }}
@@ -50,4 +55,4 @@ const ResetPasswordForm: FC = () => {
   )
 }
 
-export default ResetPasswordForm
+export default EmailForm

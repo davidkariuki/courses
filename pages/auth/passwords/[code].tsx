@@ -5,10 +5,10 @@ import Head from "next/head"
 import { Container } from "@material-ui/core"
 
 import Layout from "../../../components/Layout"
-import ResetPasswordForm from "../../../components/ResetPasswordForm"
+import PasswordForm from "../../../components/PasswordForm"
 import useStyles from "../../../styles"
 
-const ResetPassword: FC = () => {
+const Password: FC = () => {
   const classes = useStyles()
   //const [session] = useSession()
   //const router = useRouter()
@@ -24,10 +24,10 @@ const ResetPassword: FC = () => {
       </Head>
 
       <Container maxWidth="sm" className={classes.container}>
-        <ResetPasswordForm />
+        <PasswordForm />
       </Container>
     </Layout>
   )
 }
 
-export default ResetPassword
+export default Password

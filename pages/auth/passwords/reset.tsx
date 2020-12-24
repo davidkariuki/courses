@@ -5,7 +5,7 @@ import { useRouter } from "next/router"
 import { Container } from "@material-ui/core"
 
 import Layout from "../../../components/Layout"
-import ResetPasswordForm from "../../../components/ResetPasswordForm"
+import EmailForm from "../../../components/EmailForm"
 import useStyles from "../../../styles"
 
 const ChangePassword: FC = () => {
@@ -24,7 +24,7 @@ const ChangePassword: FC = () => {
       </Head>
 
       <Container maxWidth="sm" className={classes.container}>
-        {!session && <ResetPasswordForm />}
+        {!session && <EmailForm />}
       </Container>
     </Layout>
   )

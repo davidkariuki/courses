@@ -27,7 +27,7 @@ const PasswordForm: FC = () => {
           method: "PATCH",
           body: JSON.stringify({
             password: values.password,
-            code: router.query.code,
+            token: router.query.token,
           }),
         })
         setSubmitting(false)
@@ -49,7 +49,7 @@ const PasswordForm: FC = () => {
       }}
     >
       <Form className={classes.form}>
-        <Typography variant="h4">Change your password</Typography>
+        <Typography variant="h3">Change your password</Typography>
         <Field
           name="password"
           type="password"

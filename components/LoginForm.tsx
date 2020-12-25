@@ -48,7 +48,7 @@ const LoginForm: FC = () => {
       }}
     >
       <Form className={classes.form}>
-        <Typography variant="h4">Sign in</Typography>
+        <Typography variant="h3">Sign in</Typography>
         <Field name="email" type="email" label="Email" component={TextField} />
         <Field
           name="password"

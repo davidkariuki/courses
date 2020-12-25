@@ -45,7 +45,7 @@ const EmailForm: FC = () => {
       }}
     >
       <Form className={classes.form}>
-        <Typography variant="h4">Forgot your password?</Typography>
+        <Typography variant="h3">Forgot your password?</Typography>
         <Field name="email" type="email" label="Email" component={TextField} />
         <Button type="submit" variant="contained" color="primary">
           Send me password reset instructions

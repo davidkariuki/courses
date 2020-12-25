@@ -1,7 +1,10 @@
 import type { NextApiHandler, NextApiRequest, NextApiResponse } from "next"
 import NextAuth from "next-auth"
 import Providers from "next-auth/providers"
-//import bcrypt from "bcryptjs"
+import bcrypt from "bcryptjs"
+
+import { connectDb, models } from "../../../utils/db"
+import { User } from "../../../types"
 
 const options = {
   pages: {
@@ -15,13 +18,12 @@ const options = {
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
+        await connectDb()
+
         const { email, password } = credentials
-        const user = { id: 1, name: password, email: email }
+        const user: User = await models.User.findOne({ email: email })
 
-        // get hash from User#encrypted_password
-        // bcrypt.compareSync(password, hash)
-
-        if (user) {
+        if (user && validPassword(password, user.encryptedPassword)) {
           return Promise.resolve(user)
         } else {
           return Promise.resolve(null)
@@ -29,6 +31,10 @@ const options = {
       },
     }),
   ],
+}
+
+const validPassword = (password: string, hash: string): boolean => {
+  return bcrypt.compareSync(password, hash)
 }
 
 const handler: NextApiHandler = (req: NextApiRequest, res: NextApiResponse) =>

@@ -28,7 +28,7 @@ export default function Home() {
       </Head>
 
       <Container maxWidth="xl" className={styles.homeContainer}>
-        <Typography variant="h4">Home</Typography>
+        <Typography variant="h3">Home</Typography>
       </Container>
     </Layout>
   )

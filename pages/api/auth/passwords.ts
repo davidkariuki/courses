@@ -1,31 +1,59 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import { v4 as uuidv4 } from "uuid"
 
-import { sendResetPasswordEmail } from "../../../middleware/sendgrid"
+import { sendResetPasswordEmail } from "../../../utils/mail"
+import { connectDb, models } from "../../../utils/db"
+import { User } from "../../../types"
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const {
-    body: { email },
+    body: { email, password, token },
     method,
   } = req
 
-  if (method === "POST") {
-    const name = "Foo"
-    const code = uuidv4()
+  switch (method) {
+    case "POST": {
+      connectDb()
+      const resetPasswordToken = uuidv4()
+      const user: User = await models.User.findOneAndUpdate(
+        { email },
+        { resetPasswordToken },
+        { new: true }
+      )
 
-    const opts = {
-      to: email,
-      name: name,
-      url: `${process.env.NEXT_PUBLIC_WEB_URI}/auth/passwords/${code}`,
+      if (!user) {
+        return res.status(400).end(`Could not find user with email ${email}`)
+      }
+
+      const opts = {
+        to: email,
+        name: user.name,
+        url: `${process.env.NEXT_PUBLIC_WEB_URI}/auth/passwords/${resetPasswordToken}`,
+      }
+
+      const sent = await sendResetPasswordEmail(opts)
+
+      res.setHeader("Content-Type", "application/json")
+      res.status(200).json({ sent })
     }
+    case "PATCH": {
+      connectDb()
+      const user: User = await models.User.updateOne(
+        { resetPasswordToken: token },
+        { password: password },
+        { new: true }
+      )
 
-    const sent = await sendResetPasswordEmail(opts)
-
-    res.setHeader("Content-Type", "application/json")
-    res.status(200).json({ sent })
-  } else {
-    res.setHeader("Allow", ["POST"])
-    res.status(405).end(`Method ${method} not allowed`)
+      if (user) {
+        res.status(200).json({ success: true })
+      } else {
+        res.status(400).end(`Error updating password`)
+      }
+    }
+    default: {
+      res.setHeader("Allow", ["POST", "PATCH"])
+      res.status(405).end(`Method ${method} not allowed`)
+    }
   }
 }
 

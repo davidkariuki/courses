@@ -7,9 +7,9 @@ const theme = createMuiTheme({
     },
   },
   typography: {
-    h4: {
+    h3: {
       fontFamily: '"Playfair Display", sans-serif',
-      fontWeight: 700,
+      fontWeight: 500,
     },
   },
 })

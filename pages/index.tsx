@@ -1,24 +1,15 @@
+import { FC } from "react"
 import Head from "next/head"
-import { useRouter } from "next/router"
-import { useSession } from "next-auth/client"
-import { Typography, Container } from "@material-ui/core"
+import { GetServerSideProps } from "next"
+import { getSession } from "next-auth/client"
+import { Container } from "@material-ui/core"
 
 import Layout from "../components/Layout"
+import HomePage from "../components/HomePage"
 import useStyles from "../styles"
-//import { GetServerSideProps } from "next"
 
-export default function Home() {
+const Home: FC = () => {
   const styles = useStyles()
-  const router = useRouter()
-  const [session, loading] = useSession()
-
-  if (loading) {
-    return <></>
-  }
-
-  if (!loading && !session) {
-    router.push("/auth/sign_in")
-  }
 
   return (
     <Layout>
@@ -28,8 +19,27 @@ export default function Home() {
       </Head>
 
       <Container maxWidth="xl" className={styles.homeContainer}>
-        <Typography variant="h3">Home</Typography>
+        <HomePage />
       </Container>
     </Layout>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context)
+
+  if (!session) {
+    return {
+      props: { session },
+      redirect: {
+        destination: "/auth/sign_in",
+        permanent: false,
+      },
+    }
+  }
+  return {
+    props: { session },
+  }
+}
+
+export default Home

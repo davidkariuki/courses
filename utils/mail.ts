@@ -13,8 +13,8 @@ export const sendResetPasswordEmail = async (opts: MailOpts) => {
 
   const mailOpts = {
     to,
-    from: process.env.SENDGRID_DEFAULT_SENDER,
-    templateId: process.env.RESET_PWD_EMAIL_TEMPLATE_ID,
+    from: process.env.SENDGRID_DEFAULT_SENDER as string,
+    templateId: process.env.RESET_PWD_EMAIL_TEMPLATE_ID as string,
     dynamicTemplateData: { name, url },
   }
 

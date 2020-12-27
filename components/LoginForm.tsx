@@ -2,16 +2,20 @@ import { FC } from "react"
 import { Formik, Field, Form, FormikHelpers } from "formik"
 import { TextField } from "formik-material-ui"
 import { Button, Typography, Link } from "@material-ui/core"
-import { signIn } from "next-auth/client"
 import NextLink from "next/link"
+
 import useStyles from "../styles"
 
-interface Values {
+export interface Values {
   email: string
   password: string
 }
 
-const LoginForm: FC = () => {
+interface LoginFormProps {
+  onSubmit(values: Values): void
+}
+
+const LoginForm: FC<LoginFormProps> = ({ onSubmit }) => {
   const classes = useStyles()
 
   return (
@@ -21,10 +25,7 @@ const LoginForm: FC = () => {
         password: "",
       }}
       onSubmit={(values: Values, { setSubmitting }: FormikHelpers<Values>) => {
-        signIn("credentials", {
-          ...values,
-          callbackUrl: `${process.env.NEXT_PUBLIC_WEB_URI}/`,
-        })
+        onSubmit(values)
         setSubmitting(false)
       }}
       validate={(values) => {

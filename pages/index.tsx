@@ -1,6 +1,5 @@
-import { FC } from "react"
 import Head from "next/head"
-import { GetServerSideProps } from "next"
+import { GetServerSideProps, NextPage } from "next"
 import { getSession } from "next-auth/client"
 import { Container } from "@material-ui/core"
 
@@ -8,7 +7,7 @@ import Layout from "../components/Layout"
 import HomePage from "../components/HomePage"
 import useStyles from "../styles"
 
-const Home: FC = () => {
+const Home: NextPage = () => {
   const styles = useStyles()
 
   return (

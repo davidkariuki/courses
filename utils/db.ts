@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import User from "../models/User"
+import users from "../models/User"
 
 const connectDb = () => {
   if (mongoose.connection.readyState !== 0) return
@@ -10,6 +10,6 @@ const connectDb = () => {
   })
 }
 
-const models = { User }
+const models = { users }
 
 export { connectDb, models }

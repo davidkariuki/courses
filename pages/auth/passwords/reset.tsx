@@ -1,20 +1,39 @@
-import { FC } from "react"
+import { useState } from "react"
+import { GetServerSideProps, NextPage } from "next"
 import Head from "next/head"
-import { useSession } from "next-auth/client"
 import { useRouter } from "next/router"
+import { getSession, Session } from "next-auth/client"
 import { Container } from "@material-ui/core"
+import Alert from "@material-ui/lab/Alert"
 
 import Layout from "../../../components/Layout"
-import EmailForm from "../../../components/EmailForm"
+import EmailForm, { Values } from "../../../components/EmailForm"
 import useStyles from "../../../styles"
 
-const ChangePassword: FC = () => {
-  const classes = useStyles()
-  const [session] = useSession()
-  const router = useRouter()
+interface ResetPasswordProps {
+  session: Session
+}
 
-  if (session) {
-    router.push("/")
+const ResetPassword: NextPage<ResetPasswordProps> = ({ session }) => {
+  const classes = useStyles()
+  const router = useRouter()
+  const [error, setError] = useState<string>()
+
+  const onSubmit = (values: Values) => {
+    fetch("/api/auth/passwords", {
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+      body: JSON.stringify(values),
+    }).then((res) => {
+      if (res.status === 200) {
+        router.push({
+          pathname: "/auth/sign_in",
+          query: { success: "emailSent" },
+        })
+      } else {
+        setError("Sending reset password instructions failed.")
+      }
+    })
   }
 
   return (
@@ -24,10 +43,33 @@ const ChangePassword: FC = () => {
       </Head>
 
       <Container maxWidth="sm" className={classes.container}>
-        {!session && <EmailForm />}
+        {error && (
+          <Alert variant="filled" severity="error">
+            {error}
+          </Alert>
+        )}
+        {!session && <EmailForm onSubmit={onSubmit} />}
       </Container>
     </Layout>
   )
 }
 
-export default ChangePassword
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context)
+
+  if (session) {
+    return {
+      props: {},
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: { session },
+  }
+}
+
+export default ResetPassword

@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid"
 
 import { sendResetPasswordEmail } from "../../../utils/mail"
 import { connectDb, models } from "../../../utils/db"
+import { generateHash } from "../../../utils/bcrypt"
 import { User } from "../../../types"
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -15,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     case "POST": {
       connectDb()
       const resetPasswordToken = uuidv4()
-      const user: User = await models.User.findOneAndUpdate(
+      const user: User = await models.users.findOneAndUpdate(
         { email },
         { resetPasswordToken },
         { new: true }
@@ -33,26 +34,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       const sent = await sendResetPasswordEmail(opts)
 
-      res.setHeader("Content-Type", "application/json")
-      res.status(200).json({ sent })
+      return res.status(200).json({ sent })
     }
     case "PATCH": {
       connectDb()
-      const user: User = await models.User.updateOne(
+      const encryptedPassword = generateHash(password)
+
+      const user: User = await models.users.findOneAndUpdate(
         { resetPasswordToken: token },
-        { password: password },
+        { encryptedPassword, resetPasswordToken: null },
         { new: true }
       )
 
       if (user) {
-        res.status(200).json({ success: true })
+        return res.status(200).json({ success: true })
       } else {
-        res.status(400).end(`Error updating password`)
+        return res.status(400).end(`Error updating password`)
       }
     }
     default: {
-      res.setHeader("Allow", ["POST", "PATCH"])
-      res.status(405).end(`Method ${method} not allowed`)
+      return res.status(405).end(`Method ${method} not allowed`)
     }
   }
 }

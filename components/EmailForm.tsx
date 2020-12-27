@@ -1,18 +1,20 @@
 import { FC } from "react"
-import { useRouter } from "next/router"
 import { Formik, Field, Form, FormikHelpers } from "formik"
 import { TextField } from "formik-material-ui"
 import { Button, Typography } from "@material-ui/core"
 
 import useStyles from "../styles"
 
-interface Values {
+export interface Values {
   email: string
 }
 
-const EmailForm: FC = () => {
+interface EmailFormProps {
+  onSubmit(values: Values): void
+}
+
+const EmailForm: FC<EmailFormProps> = ({ onSubmit }) => {
   const classes = useStyles()
-  const router = useRouter()
 
   return (
     <Formik
@@ -20,14 +22,7 @@ const EmailForm: FC = () => {
         email: "",
       }}
       onSubmit={(values: Values, { setSubmitting }: FormikHelpers<Values>) => {
-        fetch("/api/auth/passwords", {
-          headers: { "Content-Type": "application/json" },
-          method: "POST",
-          body: JSON.stringify(values),
-        }).then((res) => {
-          console.log("response: ", res.status)
-          router.push("/auth/sign_in")
-        })
+        onSubmit(values)
         setSubmitting(false)
       }}
       validate={(values) => {

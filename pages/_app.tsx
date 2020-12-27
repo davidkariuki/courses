@@ -4,6 +4,7 @@ import { AppProps } from "next/app"
 import { ThemeProvider } from "@material-ui/core/styles"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import { Provider } from "next-auth/client"
+import { SnackbarProvider } from "nextjs-toast"
 
 import theme from "../theme"
 
@@ -20,18 +21,25 @@ export default function MyApp(props: AppProps) {
 
   return (
     <Provider session={pageProps.session}>
-      <Head>
-        <title>Mastered</title>
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width"
-        />
-      </Head>
-      <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <Component {...pageProps} />
-      </ThemeProvider>
+      <SnackbarProvider
+        SnackbarProps={{
+          anchorOrigin: { vertical: "top", horizontal: "center" },
+          autoHideDuration: 4000,
+        }}
+      >
+        <Head>
+          <title>Mastered</title>
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width"
+          />
+        </Head>
+        <ThemeProvider theme={theme}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </SnackbarProvider>
     </Provider>
   )
 }

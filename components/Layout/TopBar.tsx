@@ -1,4 +1,4 @@
-import { FC, useState, MouseEvent } from "react"
+import { FC, useState, MouseEvent, useEffect } from "react"
 import Link from "next/link"
 import { signOut, useSession } from "next-auth/client"
 import { createStyles, makeStyles } from "@material-ui/core/styles"
@@ -21,9 +21,9 @@ const useStyles = makeStyles(() =>
 )
 
 const TopBar: FC = () => {
+  const [session] = useSession()
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [session] = useSession()
   const open = Boolean(anchorEl)
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {

@@ -17,4 +17,12 @@ const schema = new mongoose.Schema(
   { timestamps: true }
 )
 
-export default mongoose.models.User || mongoose.model("User", schema)
+schema.set("toJSON", {
+  virtuals: true,
+  versionKey: false,
+  transform: (_doc: any, ret: any) => {
+    delete ret._id
+  },
+})
+
+export default mongoose.models.users || mongoose.model("users", schema)

@@ -3202,13 +3202,6 @@ next@10.0.3:
   optionalDependencies:
     sharp "0.26.2"
 
-nextjs-toast@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/nextjs-toast/-/nextjs-toast-1.0.4.tgz#4d0fa6ed418e9addb48c11568c264a70b060ef8f"
-  integrity sha512-1QyczBzWtLP0DpKZoY3rfSiVJ2kgvydspWdlquX08r/lUrtqJ8ZP6yn2VyON7TzneC60wGyRdykyexjmZvyB7g==
-  dependencies:
-    prop-types "^15.7.2"
-
 node-abi@^2.7.0:
   version "2.19.3"
   resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.19.3.tgz#252f5dcab12dad1b5503b2d27eddd4733930282d"

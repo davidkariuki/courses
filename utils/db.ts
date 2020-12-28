@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import users from "../models/User"
+import users from "../models/users"
 
 const connectDb = () => {
   if (mongoose.connection.readyState !== 0) return

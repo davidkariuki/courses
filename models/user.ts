@@ -1,6 +1,21 @@
-import mongoose from "mongoose"
+import mongoose, { Schema, Document } from "mongoose"
 
-const schema = new mongoose.Schema(
+export interface User extends Document {
+  id: string
+  email: string
+  name: string
+  encryptedPassword: string
+  resetPasswordToken?: string
+  social_data: {
+    twitterHandle?: string
+    websiteUrl?: string
+    youtubeUrl?: string
+  }
+  expert: boolean
+  instructor: boolean
+}
+
+const schema = new Schema(
   {
     email: { type: String, required: true },
     name: { type: String, required: true },
@@ -25,4 +40,4 @@ schema.set("toJSON", {
   },
 })
 
-export default mongoose.models.users || mongoose.model("users", schema)
+export default mongoose.models.users || mongoose.model<User>("users", schema)

@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid"
 import { sendResetPasswordEmail } from "../../../utils/mail"
 import { connectDb, models } from "../../../utils/db"
 import { generateHash } from "../../../utils/bcrypt"
-import { User } from "../../../types"
+import { User } from "../../../models/user"
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const {
@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     case "POST": {
       connectDb()
       const resetPasswordToken = uuidv4()
-      const user: User = await models.users.findOneAndUpdate(
+      const user: User = await models.User.findOneAndUpdate(
         { email },
         { resetPasswordToken },
         { new: true }
@@ -40,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       connectDb()
       const encryptedPassword = generateHash(password)
 
-      const user: User = await models.users.findOneAndUpdate(
+      const user: User = await models.User.findOneAndUpdate(
         { resetPasswordToken: token },
         { encryptedPassword, resetPasswordToken: null },
         { new: true }

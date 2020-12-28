@@ -9,7 +9,7 @@ import Layout from "../../../components/Layout"
 import PasswordForm, { Values } from "../../../components/PasswordForm"
 import useStyles from "../../../styles"
 import { connectDb, models } from "../../../utils/db"
-import { User } from "../../../types"
+import { User } from "../../../models/user"
 
 interface Props {
   user: User
@@ -76,9 +76,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     query: { token },
   } = context
   await connectDb()
-  const user: User = await models.users
-    .findOne({ resetPasswordToken: token })
-    .lean()
+  const user: User = await models.User.findOne({
+    resetPasswordToken: token,
+  }).lean()
 
   if (user) {
     return {

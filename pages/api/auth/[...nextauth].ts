@@ -1,10 +1,10 @@
 import type { NextApiHandler, NextApiRequest, NextApiResponse } from "next"
 import NextAuth from "next-auth"
 import Providers from "next-auth/providers"
+import { User } from "../../../models/user"
 import { validPassword } from "../../../utils/bcrypt"
 
 import { connectDb, models } from "../../../utils/db"
-import { User } from "../../../types"
 
 const options = {
   pages: {
@@ -21,7 +21,7 @@ const options = {
         await connectDb()
 
         const { email, password } = credentials
-        const user: User = await models.users.findOne({ email: email })
+        const user: User = await models.User.findOne({ email: email })
 
         if (user && validPassword(password, user.encryptedPassword)) {
           return Promise.resolve(user)

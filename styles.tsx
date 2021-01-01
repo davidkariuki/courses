@@ -5,6 +5,7 @@ const useStyles = makeStyles((theme: Theme) =>
     homeContainer: {
       flexGrow: 1,
       display: "flex",
+      flexDirection: "column",
     },
     container: {
       flexGrow: 1,

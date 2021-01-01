@@ -1,4 +1,4 @@
-import { FC, useState, MouseEvent, useEffect } from "react"
+import React, { FC, useState, MouseEvent } from "react"
 import Link from "next/link"
 import { signOut, useSession } from "next-auth/client"
 import { createStyles, makeStyles } from "@material-ui/core/styles"
@@ -8,9 +8,13 @@ import IconButton from "@material-ui/core/IconButton"
 import AccountCircle from "@material-ui/icons/AccountCircle"
 import MenuItem from "@material-ui/core/MenuItem"
 import Menu from "@material-ui/core/Menu"
+import { Container } from "@material-ui/core"
 
 const useStyles = makeStyles(() =>
   createStyles({
+    toolbar: {
+      padding: 0,
+    },
     grow: {
       flexGrow: 1,
     },
@@ -41,47 +45,49 @@ const TopBar: FC = () => {
 
   return (
     <AppBar position="static">
-      <Toolbar>
-        <Link href="/">
-          <IconButton edge="start" color="inherit" aria-label="logo">
-            <img className={classes.logoImage} src="/logo.svg" alt="Logo" />
-          </IconButton>
-        </Link>
-        <div className={classes.grow} />
-        {session && (
-          <>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-              edge="end"
-            >
-              <AccountCircle />
+      <Container maxWidth="md">
+        <Toolbar className={classes.toolbar}>
+          <Link href="/">
+            <IconButton edge="start" color="inherit" aria-label="logo">
+              <img className={classes.logoImage} src="/logo.svg" alt="Logo" />
             </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={open}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-              <MenuItem onClick={onSignOutClick}>Sign out</MenuItem>
-            </Menu>
-          </>
-        )}
-      </Toolbar>
+          </Link>
+          <div className={classes.grow} />
+          {session && (
+            <>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+                edge="end"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={onSignOutClick}>Sign out</MenuItem>
+              </Menu>
+            </>
+          )}
+        </Toolbar>
+      </Container>
     </AppBar>
   )
 }

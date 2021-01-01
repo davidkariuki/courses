@@ -6,12 +6,6 @@ const theme = createMuiTheme({
       main: "#2E2E2E",
     },
   },
-  typography: {
-    h3: {
-      fontFamily: '"Playfair Display", sans-serif',
-      fontWeight: 500,
-    },
-  },
 })
 
 export default theme

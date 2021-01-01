@@ -1,6 +1,6 @@
-import mongoose, { Schema, Document } from "mongoose"
+import { Schema, Document, model, models } from "mongoose"
 
-export interface User extends Document {
+export interface User {
   id: string
   email: string
   name: string
@@ -15,7 +15,7 @@ export interface User extends Document {
   instructor: boolean
 }
 
-const schema = new Schema(
+const UserSchema = new Schema(
   {
     email: { type: String, required: true },
     name: { type: String, required: true },
@@ -32,7 +32,7 @@ const schema = new Schema(
   { timestamps: true }
 )
 
-schema.set("toJSON", {
+UserSchema.set("toJSON", {
   virtuals: true,
   versionKey: false,
   transform: (_doc: any, ret: any) => {
@@ -40,4 +40,6 @@ schema.set("toJSON", {
   },
 })
 
-export default mongoose.models.users || mongoose.model<User>("users", schema)
+export type UserDocument = User & Document
+
+export default models.users || model<UserDocument>("users", UserSchema)

@@ -17,7 +17,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container maxWidth="xl" className={styles.homeContainer}>
+      <Container maxWidth="md" className={styles.homeContainer}>
         <HomePage />
       </Container>
     </Layout>

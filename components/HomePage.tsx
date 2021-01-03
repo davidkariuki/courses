@@ -20,7 +20,7 @@ const useStyles = makeStyles(() =>
     },
     gridList: {},
     image: {
-      height: 140,
+      height: 280,
     },
   })
 )
@@ -31,30 +31,27 @@ const HomePage: FC = () => {
   const courses = [
     {
       id: 1,
-      title: "Master surface embellishment",
+      title: "Make-up: Mastered",
       cover:
         "https://d2osrjirua6dno.cloudfront.net/uploads/course/cover_image/34/wide_thumb_course-val.jpg",
-      author: "Karen Nicol",
       summary:
-        "Learn couture embellishment design and techniques to a professional standard.",
+        "The inside track on how to get ahead as a make-up artist in the fashion industry.  ",
     },
     {
       id: 2,
-      title: "Tambour Beading",
+      title: "Nails Mastered: Creativity",
       cover:
         "https://d2osrjirua6dno.cloudfront.net/uploads/course/cover_image/35/wide_thumb_nails.jpg",
-      author: "Miss Piggy von Bacon",
       summary:
-        "Amet laboriosam possimus laboriosam nulla fugit? Id quas magnam quos necessitatibus est tempore. Quae fuga amet adipisicing vel voluptates Odio exercitationem eveniet velit amet animi quis sed. Tempore nam et?",
+        "A unique 12-week online program led by Marian Newman to help you create your best nails work and get it out there",
     },
     {
       id: 3,
       title: "Fashion Design with Parsons",
       cover:
         "https://d2osrjirua6dno.cloudfront.net/uploads/course/cover_image/37/wide_thumb_hero-images-template.jpg",
-      author: "Duke Le'Coat",
       summary:
-        "Parsons has trained everyone from Marc Jacobs and Donna Karen to Jason Wu and Anna Sui. In this unique collaboration with Mastered, the New York school has devised a three-month online course in fashion design to help designers develop and refine their creative process and create more exciting and innovative designs. Places are limited: register your interest now.",
+        "Train in fashion design with New York's premier fashion institution",
     },
   ]
 
@@ -66,7 +63,7 @@ const HomePage: FC = () => {
       <div className={classes.margins}>
         <Grid container spacing={3}>
           {courses.map((course) => (
-            <Grid item xs={12} key={course.id}>
+            <Grid item xs={12} sm={6} key={course.id}>
               <Card>
                 <CardActionArea>
                   <CardMedia

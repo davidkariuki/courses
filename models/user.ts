@@ -1,12 +1,13 @@
-import { Schema, Document, model, models } from "mongoose"
+import { Schema, Document, model, models, Types } from "mongoose"
 
 export interface User {
-  id: string
+  _id: string
+  userId?: string
   email: string
   name: string
   encryptedPassword: string
   resetPasswordToken?: string
-  social_data: {
+  socialData: {
     twitterHandle?: string
     websiteUrl?: string
     youtubeUrl?: string
@@ -17,6 +18,8 @@ export interface User {
 
 const UserSchema = new Schema(
   {
+    _id: { type: Types.ObjectId, required: true },
+    userId: { type: String },
     email: { type: String, required: true },
     name: { type: String, required: true },
     encryptedPassword: { type: String, required: true },
@@ -31,14 +34,6 @@ const UserSchema = new Schema(
   },
   { timestamps: true }
 )
-
-UserSchema.set("toJSON", {
-  virtuals: true,
-  versionKey: false,
-  transform: (_doc: any, ret: any) => {
-    delete ret._id
-  },
-})
 
 export type UserDocument = User & Document
 

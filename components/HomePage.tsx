@@ -1,4 +1,6 @@
 import React, { FC } from "react"
+
+import { Course } from "../models/course"
 import {
   Card,
   CardActionArea,
@@ -7,53 +9,34 @@ import {
   createStyles,
   Grid,
   makeStyles,
+  Theme,
   Typography,
 } from "@material-ui/core"
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     title: {
       marginTop: "1rem",
     },
     margins: {
-      margin: "2rem 0",
+      margin: theme.spacing(2),
     },
     gridList: {},
     image: {
       height: 280,
+      backgroundSize: "contain",
+      backgroundOrigin: "content-box",
+      padding: "0 1rem",
     },
   })
 )
 
-const HomePage: FC = () => {
-  const classes = useStyles()
+interface Props {
+  courses: Course[]
+}
 
-  const courses = [
-    {
-      id: 1,
-      title: "Make-up: Mastered",
-      cover:
-        "https://d2osrjirua6dno.cloudfront.net/uploads/course/cover_image/34/wide_thumb_course-val.jpg",
-      summary:
-        "The inside track on how to get ahead as a make-up artist in the fashion industry.  ",
-    },
-    {
-      id: 2,
-      title: "Nails Mastered: Creativity",
-      cover:
-        "https://d2osrjirua6dno.cloudfront.net/uploads/course/cover_image/35/wide_thumb_nails.jpg",
-      summary:
-        "A unique 12-week online program led by Marian Newman to help you create your best nails work and get it out there",
-    },
-    {
-      id: 3,
-      title: "Fashion Design with Parsons",
-      cover:
-        "https://d2osrjirua6dno.cloudfront.net/uploads/course/cover_image/37/wide_thumb_hero-images-template.jpg",
-      summary:
-        "Train in fashion design with New York's premier fashion institution",
-    },
-  ]
+const HomePage: FC<Props> = ({ courses }) => {
+  const classes = useStyles()
 
   return (
     <>
@@ -63,12 +46,12 @@ const HomePage: FC = () => {
       <div className={classes.margins}>
         <Grid container spacing={3}>
           {courses.map((course) => (
-            <Grid item xs={12} sm={6} key={course.id}>
+            <Grid item xs={12} sm={6} key={course.courseId}>
               <Card>
                 <CardActionArea>
                   <CardMedia
                     className={classes.image}
-                    image={course.cover}
+                    image={course.images.cover || "/logo-full.svg"}
                     title={course.title}
                   />
                   <CardContent>
@@ -80,7 +63,7 @@ const HomePage: FC = () => {
                       color="textSecondary"
                       component="p"
                     >
-                      {course.summary}
+                      {course.headline}
                     </Typography>
                   </CardContent>
                 </CardActionArea>

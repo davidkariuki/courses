@@ -6,8 +6,14 @@ import { Container } from "@material-ui/core"
 import Layout from "../components/Layout"
 import HomePage from "../components/HomePage"
 import useStyles from "../styles"
+import { models, connectDb } from "../utils/db"
+import { Course } from "../models/course"
 
-const Home: NextPage = () => {
+interface Props {
+  courses: Course[]
+}
+
+const Home: NextPage<Props> = ({ courses }) => {
   const styles = useStyles()
 
   return (
@@ -18,13 +24,14 @@ const Home: NextPage = () => {
       </Head>
 
       <Container maxWidth="md" className={styles.homeContainer}>
-        <HomePage />
+        <HomePage courses={courses} />
       </Container>
     </Layout>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  connectDb()
   const session = await getSession(context)
 
   if (!session) {
@@ -36,8 +43,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     }
   }
+
+  const result: Course[] = await models.Course.find({}).lean()
+
+  const courses = result.map((c) => {
+    return { ...c, _id: c._id.toString() }
+  })
+
   return {
-    props: { session },
+    props: { session, courses: courses },
   }
 }
 

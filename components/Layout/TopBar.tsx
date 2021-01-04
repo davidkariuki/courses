@@ -1,6 +1,5 @@
 import React, { FC, useState, MouseEvent, useContext } from "react"
 import Link from "next/link"
-import { signOut } from "next-auth/client"
 import { createStyles, makeStyles } from "@material-ui/core/styles"
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
@@ -41,7 +40,6 @@ const TopBar: FC = () => {
 
   const onSignOutClick = (_e: MouseEvent) => {
     setAnchorEl(null)
-    signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_WEB_URI}/auth/sign_in` })
   }
 
   //console.log("topbar render-----")

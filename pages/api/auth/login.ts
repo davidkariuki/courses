@@ -14,7 +14,7 @@ const handler: Handler = async (req, res) => {
   if (!user) {
     return res
       .status(404)
-      .json({ error: "Could not find user with the provided email" })
+      .json({ message: "An account with that email does not exist." })
   }
 
   if (validPassword(password, user.encryptedPassword)) {
@@ -23,9 +23,9 @@ const handler: Handler = async (req, res) => {
     await req.session.save()
     return res.status(200).json(user)
   } else {
-    res
-      .status(500)
-      .json({ error: "Could not log in with the provided credentials" })
+    res.status(500).json({
+      message: "Sign in failed. Check the details you provided are correct.",
+    })
   }
 }
 

@@ -23,7 +23,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       )
 
       if (!user) {
-        return res.status(400).end(`Could not find user with email ${email}`)
+        return res
+          .status(400)
+          .json({ message: `Could not find user with email ${email}` })
       }
 
       const opts = {
@@ -34,7 +36,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       const sent = await sendResetPasswordEmail(opts)
 
-      return res.status(200).json({ sent })
+      return res
+        .status(200)
+        .json({ message: sent ? "Email sent" : "Email failed" })
     }
     case "PATCH": {
       connectDb()
@@ -47,13 +51,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       )
 
       if (user) {
-        return res.status(200).json({ success: true })
+        return res
+          .status(200)
+          .json({ message: "Password updated successfully" })
       } else {
-        return res.status(400).end(`Error updating password`)
+        return res.status(400).json({ message: "Error updating password" })
       }
     }
     default: {
-      return res.status(405).end(`Method ${method} not allowed`)
+      return res.status(405).json({ message: `Method ${method} not allowed` })
     }
   }
 }

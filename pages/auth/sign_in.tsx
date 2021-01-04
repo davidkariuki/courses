@@ -1,30 +1,34 @@
 import Head from "next/head"
-import { GetServerSideProps, NextPage } from "next"
-import { getSession, csrfToken, Session, signIn } from "next-auth/client"
+import { NextPage } from "next"
 import { Container } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
 
 import Layout from "../../components/Layout"
 import LoginForm, { Values } from "../../components/LoginForm"
 import useStyles from "../../styles"
+import { useState } from "react"
+import { useRouter } from "next/router"
 
-interface SignInProps {
-  csrfToken: string
-  session: Session
-  error: string
-  success: string
-}
-
-const SignIn: NextPage<SignInProps> = ({
-  csrfToken,
-  session,
-  error,
-  success,
-}) => {
+const SignIn: NextPage = () => {
   const classes = useStyles()
+  const router = useRouter()
+  const { success, error } = router.query
+  const [errorMsg, setErrorMsg] = useState<string>(error as string)
+  const [successMsg] = useState<string>(success as string)
 
-  const onSubmit = (values: Values) => {
-    signIn("credentials", { ...values, csrfToken })
+  const onSubmit = async (values: Values) => {
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    })
+
+    if (response.ok) {
+      router.push("/")
+    } else {
+      const { message } = await response.json()
+      setErrorMsg(message)
+    }
   }
 
   return (
@@ -34,17 +38,17 @@ const SignIn: NextPage<SignInProps> = ({
       </Head>
 
       <Container maxWidth="sm" className={classes.container}>
-        {error && (
+        {errorMsg && (
           <Alert variant="filled" severity="error">
-            Sign in failed. Check the details you provided are correct.
+            {errorMsg}
           </Alert>
         )}
-        {success && (
+        {successMsg && (
           <Alert variant="filled" severity="success">
-            {successMessage(success)}
+            {successMessage(successMsg)}
           </Alert>
         )}
-        {!session && <LoginForm onSubmit={onSubmit} />}
+        <LoginForm onSubmit={onSubmit} />
       </Container>
     </Layout>
   )
@@ -58,26 +62,6 @@ const successMessage = (key: string): string => {
       return "Reset password email sent successfully"
     default:
       return ""
-  }
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context)
-  const error = context.query.error || null
-  const success = context.query.success || null
-
-  if (session) {
-    return {
-      props: {},
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    }
-  }
-
-  return {
-    props: { csrfToken: await csrfToken(context), session, error, success },
   }
 }
 

@@ -3,7 +3,6 @@ import Head from "next/head"
 import { AppProps } from "next/app"
 import { ThemeProvider } from "@material-ui/core/styles"
 import CssBaseline from "@material-ui/core/CssBaseline"
-import { Provider as NextAuthProvider } from "next-auth/client"
 import { UserStore } from "../contexts/UserContext"
 
 import theme from "../theme"
@@ -20,7 +19,7 @@ export default function MyApp(props: AppProps) {
   }, [])
 
   return (
-    <NextAuthProvider session={pageProps.session}>
+    <>
       <Head>
         <title>Mastered</title>
         <meta
@@ -35,6 +34,6 @@ export default function MyApp(props: AppProps) {
           <Component {...pageProps} />
         </ThemeProvider>
       </UserStore>
-    </NextAuthProvider>
+    </>
   )
 }

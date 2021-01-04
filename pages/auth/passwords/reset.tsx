@@ -1,8 +1,7 @@
 import { useState } from "react"
-import { GetServerSideProps, NextPage } from "next"
+import { NextPage } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
-import { getSession, Session } from "next-auth/client"
 import { Container } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
 
@@ -10,11 +9,7 @@ import Layout from "../../../components/Layout"
 import EmailForm, { Values } from "../../../components/EmailForm"
 import useStyles from "../../../styles"
 
-interface ResetPasswordProps {
-  session: Session
-}
-
-const ResetPassword: NextPage<ResetPasswordProps> = ({ session }) => {
+const ResetPassword: NextPage = () => {
   const classes = useStyles()
   const router = useRouter()
   const [error, setError] = useState<string>()
@@ -48,28 +43,10 @@ const ResetPassword: NextPage<ResetPasswordProps> = ({ session }) => {
             {error}
           </Alert>
         )}
-        {!session && <EmailForm onSubmit={onSubmit} />}
+        <EmailForm onSubmit={onSubmit} />
       </Container>
     </Layout>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context)
-
-  if (session) {
-    return {
-      props: {},
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    }
-  }
-
-  return {
-    props: { session },
-  }
 }
 
 export default ResetPassword

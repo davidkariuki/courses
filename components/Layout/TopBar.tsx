@@ -1,6 +1,6 @@
-import React, { FC, useState, MouseEvent } from "react"
+import React, { FC, useState, MouseEvent, useContext } from "react"
 import Link from "next/link"
-import { signOut, useSession } from "next-auth/client"
+import { signOut } from "next-auth/client"
 import { createStyles, makeStyles } from "@material-ui/core/styles"
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
@@ -9,6 +9,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle"
 import MenuItem from "@material-ui/core/MenuItem"
 import Menu from "@material-ui/core/Menu"
 import { Container } from "@material-ui/core"
+import UserContext from "../../contexts/UserContext"
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -25,10 +26,10 @@ const useStyles = makeStyles(() =>
 )
 
 const TopBar: FC = () => {
-  const [session] = useSession()
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+  const { user } = useContext(UserContext)
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -43,6 +44,8 @@ const TopBar: FC = () => {
     signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_WEB_URI}/auth/sign_in` })
   }
 
+  //console.log("topbar render-----")
+
   return (
     <AppBar position="static">
       <Container maxWidth="md">
@@ -53,7 +56,7 @@ const TopBar: FC = () => {
             </IconButton>
           </Link>
           <div className={classes.grow} />
-          {session && (
+          {user && (
             <>
               <IconButton
                 aria-label="account of current user"

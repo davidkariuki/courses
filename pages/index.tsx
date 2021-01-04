@@ -1,6 +1,5 @@
 import Head from "next/head"
 import { GetServerSideProps, NextPage } from "next"
-import { getSession } from "next-auth/client"
 import { Container } from "@material-ui/core"
 
 import Layout from "../components/Layout"
@@ -8,6 +7,7 @@ import HomePage from "../components/HomePage"
 import useStyles from "../styles"
 import { models, connectDb } from "../utils/db"
 import { Course } from "../models/course"
+import withSession from "../utils/session"
 
 interface Props {
   courses: Course[]
@@ -30,29 +30,31 @@ const Home: NextPage<Props> = ({ courses }) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  connectDb()
-  const session = await getSession(context)
+export const getServerSideProps: GetServerSideProps = withSession(
+  async function ({ req }) {
+    connectDb()
+    const user = req.session.get("user")
 
-  if (!session) {
+    if (!user) {
+      return {
+        props: {},
+        redirect: {
+          destination: "/auth/sign_in",
+          permanent: false,
+        },
+      }
+    }
+
+    const result: Course[] = await models.Course.find({}).lean()
+
+    const courses = result.map((c) => {
+      return { ...c, _id: c._id.toString() }
+    })
+
     return {
-      props: {},
-      redirect: {
-        destination: "/auth/sign_in",
-        permanent: false,
-      },
+      props: { user, courses },
     }
   }
-
-  const result: Course[] = await models.Course.find({}).lean()
-
-  const courses = result.map((c) => {
-    return { ...c, _id: c._id.toString() }
-  })
-
-  return {
-    props: { session, courses },
-  }
-}
+)
 
 export default Home

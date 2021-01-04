@@ -14,21 +14,21 @@ const ResetPassword: NextPage = () => {
   const router = useRouter()
   const [error, setError] = useState<string>()
 
-  const onSubmit = (values: Values) => {
-    fetch("/api/auth/passwords", {
+  const onSubmit = async (values: Values) => {
+    const response = await fetch("/api/auth/passwords", {
       headers: { "Content-Type": "application/json" },
       method: "POST",
       body: JSON.stringify(values),
-    }).then((res) => {
-      if (res.status === 200) {
-        router.push({
-          pathname: "/auth/sign_in",
-          query: { success: "emailSent" },
-        })
-      } else {
-        setError("Sending reset password instructions failed.")
-      }
     })
+    if (response.ok) {
+      router.push({
+        pathname: "/auth/sign_in",
+        query: { success: "emailSent" },
+      })
+    } else {
+      const { message } = await response.json()
+      setError(message)
+    }
   }
 
   return (

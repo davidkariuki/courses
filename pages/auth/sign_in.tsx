@@ -13,8 +13,10 @@ const SignIn: NextPage = () => {
   const classes = useStyles()
   const router = useRouter()
   const { success, error } = router.query
-  const [errorMsg, setErrorMsg] = useState<string>(error as string)
-  const [successMsg] = useState<string>(success as string)
+  const [errorMsg, setErrorMsg] = useState<string | undefined>(error as string)
+  const [successMsg, setSuccessMsg] = useState<string | undefined>(
+    success as string
+  )
 
   const onSubmit = async (values: Values) => {
     const response = await fetch("/api/auth/login", {
@@ -28,6 +30,7 @@ const SignIn: NextPage = () => {
     } else {
       const { message } = await response.json()
       setErrorMsg(message)
+      setSuccessMsg(undefined)
     }
   }
 
@@ -59,7 +62,7 @@ const successMessage = (key: string): string => {
     case "passwordChanged":
       return "Password changed successfully"
     case "emailSent":
-      return "Reset password email sent successfully"
+      return "Password reset email sent successfully"
     default:
       return ""
   }

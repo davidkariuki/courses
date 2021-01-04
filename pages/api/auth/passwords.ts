@@ -24,8 +24,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       if (!user) {
         return res
-          .status(400)
-          .json({ message: `Could not find user with email ${email}` })
+          .status(404)
+          .json({
+            message: "Could not find an account with the provided email",
+          })
       }
 
       const opts = {

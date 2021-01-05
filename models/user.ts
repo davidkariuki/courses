@@ -1,4 +1,5 @@
 import { Schema, Document, model, models, Types } from "mongoose"
+import { Course } from "./course"
 
 export interface User {
   _id: string
@@ -14,6 +15,7 @@ export interface User {
   }
   expert: boolean
   instructor: boolean
+  courses: Course[]
 }
 
 const UserSchema = new Schema(
@@ -31,6 +33,7 @@ const UserSchema = new Schema(
     },
     expert: { Boolean, default: false },
     instructor: { type: Boolean, default: false },
+    courses: [{ type: Types.ObjectId, ref: "courses" }],
   },
   { timestamps: true }
 )

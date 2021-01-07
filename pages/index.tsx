@@ -8,16 +8,18 @@ import useStyles from "../styles"
 import { models, connectDb } from "../utils/db"
 import { Course } from "../models/course"
 import withSession from "../utils/session"
+import { User } from "../models/user"
 
 interface Props {
   courses: Course[]
+  user: User
 }
 
-const Home: NextPage<Props> = ({ courses }) => {
+const Home: NextPage<Props> = ({ user, courses }) => {
   const styles = useStyles()
 
   return (
-    <Layout>
+    <Layout user={user}>
       <Head>
         <title>Mastered</title>
         <link rel="icon" href="/favicon.ico" />

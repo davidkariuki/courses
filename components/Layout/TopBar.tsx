@@ -1,4 +1,4 @@
-import React, { FC, useState, MouseEvent, useContext } from "react"
+import React, { FC, useState, MouseEvent } from "react"
 import Link from "next/link"
 import { createStyles, makeStyles } from "@material-ui/core/styles"
 import AppBar from "@material-ui/core/AppBar"
@@ -8,7 +8,9 @@ import AccountCircle from "@material-ui/icons/AccountCircle"
 import MenuItem from "@material-ui/core/MenuItem"
 import Menu from "@material-ui/core/Menu"
 import { Container } from "@material-ui/core"
-import UserContext from "../../contexts/UserContext"
+import { useRouter } from "next/router"
+
+import { User } from "../../models/user"
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -24,11 +26,15 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const TopBar: FC = () => {
+interface Props {
+  user: User
+}
+
+const TopBar: FC<Props> = ({ user }) => {
+  const router = useRouter()
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-  const { user } = useContext(UserContext)
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -38,11 +44,11 @@ const TopBar: FC = () => {
     setAnchorEl(null)
   }
 
-  const onSignOutClick = (_e: MouseEvent) => {
+  const onSignOutClick = async (_e: MouseEvent) => {
     setAnchorEl(null)
+    await fetch("/api/auth/logout")
+    router.push("/auth/sign_in")
   }
-
-  //console.log("topbar render-----")
 
   return (
     <AppBar position="static">

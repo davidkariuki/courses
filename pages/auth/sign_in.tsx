@@ -8,6 +8,7 @@ import LoginForm, { Values } from "../../components/LoginForm"
 import useStyles from "../../styles"
 import { useState } from "react"
 import { useRouter } from "next/router"
+import TopBar from "../../components/Layout/TopBar"
 
 const SignIn: NextPage = () => {
   const classes = useStyles()
@@ -39,6 +40,7 @@ const SignIn: NextPage = () => {
       <Head>
         <title>Mastered | Sign In</title>
       </Head>
+      <TopBar />
 
       <Container maxWidth="sm" className={classes.container}>
         {errorMsg && (

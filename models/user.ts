@@ -3,7 +3,7 @@ import { Course } from "./course"
 
 export interface User {
   _id: string
-  userId?: string
+  userId?: number
   email: string
   name: string
   encryptedPassword: string
@@ -21,7 +21,7 @@ export interface User {
 const UserSchema = new Schema(
   {
     _id: { type: Types.ObjectId, required: true },
-    userId: { type: String },
+    userId: { type: Number },
     email: { type: String, required: true },
     name: { type: String, required: true },
     encryptedPassword: { type: String, required: true },

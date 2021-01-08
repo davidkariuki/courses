@@ -27,7 +27,7 @@ const useStyles = makeStyles(() =>
 )
 
 interface Props {
-  user: User
+  user?: User
 }
 
 const TopBar: FC<Props> = ({ user }) => {

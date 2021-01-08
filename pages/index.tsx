@@ -9,6 +9,8 @@ import { models, connectDb } from "../utils/db"
 import { Course } from "../models/course"
 import withSession from "../utils/session"
 import { User } from "../models/user"
+import { Enrolment } from "../models/enrolment"
+import TopBar from "../components/Layout/TopBar"
 
 interface Props {
   courses: Course[]
@@ -19,12 +21,13 @@ const Home: NextPage<Props> = ({ user, courses }) => {
   const styles = useStyles()
 
   return (
-    <Layout user={user}>
+    <Layout>
       <Head>
         <title>Mastered</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <TopBar user={user} />
       <Container maxWidth="md" className={styles.homeContainer}>
         <HomePage courses={courses} />
       </Container>
@@ -47,10 +50,13 @@ export const getServerSideProps: GetServerSideProps = withSession(
       }
     }
 
-    const result: Course[] = await models.Course.find({}).lean()
+    const result: Enrolment[] = await models.Enrolment.find({ user: user._id })
+      .populate("course")
+      .lean()
 
-    const courses = result.map((c) => {
-      return { ...c, _id: c._id.toString() }
+    const courses = result.map((e) => {
+      const course = e.course
+      return { ...course, _id: course._id.toString() }
     })
 
     return {

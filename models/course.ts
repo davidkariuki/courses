@@ -2,7 +2,7 @@ import { Schema, Document, model, models, Types } from "mongoose"
 
 export interface Course {
   _id: string
-  courseId?: string
+  courseId?: number
   title: string
   slug: string
   headline: string
@@ -16,7 +16,7 @@ export interface Course {
 const CourseSchema = new Schema(
   {
     _id: { type: Types.ObjectId, required: true },
-    courseId: { type: String },
+    courseId: { type: Number },
     title: { type: String, required: true },
     slug: { type: String, required: true },
     headline: { type: String, required: true },

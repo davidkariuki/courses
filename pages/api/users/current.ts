@@ -1,5 +1,5 @@
 import { Handler } from "next-iron-session"
-import withSession from "../../../utils/session"
+import withSession from "../../../utils/withSession"
 
 import { connectDb, models } from "../../../utils/db"
 import { User } from "../../../models/user"

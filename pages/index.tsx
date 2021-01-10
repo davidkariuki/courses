@@ -7,7 +7,7 @@ import HomePage from "../components/HomePage"
 import useStyles from "../styles"
 import { models, connectDb } from "../utils/db"
 import { Course } from "../models/course"
-import withSession from "../utils/session"
+import withSession from "../utils/withSession"
 import { User } from "../models/user"
 import { Enrolment } from "../models/enrolment"
 import TopBar from "../components/Layout/TopBar"
@@ -62,7 +62,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
     return {
       props: { user, courses },
     }
-  }
+  },
 )
 
 export default Home

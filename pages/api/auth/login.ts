@@ -1,10 +1,9 @@
-import type { NextApiHandler, NextApiRequest, NextApiResponse } from "next"
 import { Handler } from "next-iron-session"
 import { User } from "../../../models/user"
 import { validPassword } from "../../../utils/bcrypt"
 
 import { connectDb, models } from "../../../utils/db"
-import withSession from "../../../utils/session"
+import withSession from "../../../utils/withSession"
 
 const handler: Handler = async (req, res) => {
   await connectDb()

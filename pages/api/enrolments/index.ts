@@ -1,7 +1,7 @@
 import { Handler } from "next-iron-session"
 
 import { connectDb, models } from "../../../utils/db"
-import withSession from "../../../utils/session"
+import withSession from "../../../utils/withSession"
 
 const handler: Handler = async (req, res) => {
   const { method, session } = req

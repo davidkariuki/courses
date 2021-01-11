@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next"
 import React, { FC } from "react"
-import { Container, Typography } from "@material-ui/core"
+import { Box, Container, Typography } from "@material-ui/core"
+import { Alert } from "@material-ui/lab"
 import Head from "next/head"
 
 import withSession from "../../utils/withSession"
@@ -10,13 +11,15 @@ import { User } from "../../models/user"
 import Layout from "../../components/Layout"
 import TopBar from "../../components/Layout/TopBar"
 import useStyles from "../../styles"
+import { Enrolment } from "../../models/enrolment"
 
 interface Props {
   user: User
   course: Course
+  authorised: boolean
 }
 
-const CourseOverview: FC<Props> = ({ user, course }) => {
+const CourseOverview: FC<Props> = ({ authorised, user, course }) => {
   const styles = useStyles()
 
   return (
@@ -27,12 +30,21 @@ const CourseOverview: FC<Props> = ({ user, course }) => {
 
       <TopBar user={user} />
       <Container maxWidth="md" className={styles.homeContainer}>
-        <Typography>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. At,
-          aspernatur sint, voluptates corrupti soluta natus sed libero quisquam
-          maiores dolores voluptate architecto laborum dolor magni animi, ut
-          inventore facilis adipisci.
-        </Typography>
+        {!authorised && (
+          <Box marginTop="2rem">
+            <Alert severity="error" variant="filled">
+              You do not have access to this course.
+            </Alert>
+          </Box>
+        )}
+        {authorised && (
+          <Typography>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. At,
+            aspernatur sint, voluptates corrupti soluta natus sed libero
+            quisquam maiores dolores voluptate architecto laborum dolor magni
+            animi, ut inventore facilis adipisci.
+          </Typography>
+        )}
       </Container>
     </Layout>
   )
@@ -44,8 +56,6 @@ export const getServerSideProps: GetServerSideProps = withSession(
     const user = req.session.get("user")
     const { id: _id } = params
 
-    const course: Course = await models.Course.findOne({ _id }).lean()
-
     if (!user) {
       return {
         props: {},
@@ -56,9 +66,32 @@ export const getServerSideProps: GetServerSideProps = withSession(
       }
     }
 
-    return {
-      props: { user, course: { ...course, _id: course._id.toString() } },
+    try {
+      const course: Course = await models.Course.findOne({ _id }).lean()
+      const enrolments: Enrolment[] = await models.Enrolment.find({
+        user: user,
+        course: course,
+      }).lean()
+
+      if (!course) throw Error
+
+      return {
+        props: {
+          authorised: enrolments.length > 0,
+          user,
+          course: { ...course, _id: course._id.toString() },
+        },
+      }
+    } catch {
+      return {
+        props: {},
+        redirect: {
+          destination: "/404",
+          permanent: false,
+        },
+      }
     }
-  },
+  }
 )
+
 export default CourseOverview

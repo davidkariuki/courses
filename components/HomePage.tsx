@@ -12,6 +12,7 @@ import {
   Theme,
   Typography,
 } from "@material-ui/core"
+import Link from "next/link"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
         minHeight: theme.spacing(20),
       },
     },
-  })
+  }),
 )
 
 interface Props {
@@ -50,19 +51,21 @@ const HomePage: FC<Props> = ({ courses }) => {
           <Grid item xs={12} sm={6} key={course.courseId}>
             <Card>
               <CardActionArea>
-                <CardContent className={classes.card}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {course.title}
-                  </Typography>
-                  <Divider className={classes.divider} />
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    {course.headline}
-                  </Typography>
-                </CardContent>
+                <Link href={`/courses/${course._id}`}>
+                  <CardContent className={classes.card}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {course.title}
+                    </Typography>
+                    <Divider className={classes.divider} />
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      component="p"
+                    >
+                      {course.headline}
+                    </Typography>
+                  </CardContent>
+                </Link>
               </CardActionArea>
             </Card>
           </Grid>

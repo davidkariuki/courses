@@ -24,7 +24,6 @@ const Home: NextPage<Props> = ({ user, courses }) => {
     <Layout>
       <Head>
         <title>Mastered</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <TopBar user={user} />

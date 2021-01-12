@@ -31,19 +31,21 @@ const CourseOverview: FC<Props> = ({ authorised, user, course }) => {
       <TopBar user={user} />
       <Container maxWidth="md" className={styles.homeContainer}>
         {!authorised && (
-          <Box marginTop="2rem">
+          <Box mt={2}>
             <Alert severity="error" variant="filled">
               You do not have access to this course.
             </Alert>
           </Box>
         )}
         {authorised && (
-          <Typography>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. At,
-            aspernatur sint, voluptates corrupti soluta natus sed libero
-            quisquam maiores dolores voluptate architecto laborum dolor magni
-            animi, ut inventore facilis adipisci.
-          </Typography>
+          <Box mt={2}>
+            <Typography>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. At,
+              aspernatur sint, voluptates corrupti soluta natus sed libero
+              quisquam maiores dolores voluptate architecto laborum dolor magni
+              animi, ut inventore facilis adipisci.
+            </Typography>
+          </Box>
         )}
       </Container>
     </Layout>

@@ -1,6 +1,8 @@
 import mongoose from "mongoose"
 import User from "../models/user"
 import Course from "../models/course"
+import CoursePart from "../models/course_part"
+import CourseModule from "../models/course_module"
 import Enrolment from "../models/enrolment"
 
 const connectDb = () => {
@@ -13,6 +15,6 @@ const connectDb = () => {
   })
 }
 
-const models = { User, Course, Enrolment }
+const models = { User, Enrolment, Course, CoursePart, CourseModule }
 
 export { connectDb, models }

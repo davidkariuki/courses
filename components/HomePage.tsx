@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
         minHeight: theme.spacing(20),
       },
     },
-  }),
+  })
 )
 
 interface Props {

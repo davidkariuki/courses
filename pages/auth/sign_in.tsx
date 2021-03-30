@@ -2,13 +2,16 @@ import Head from "next/head"
 import { NextPage } from "next"
 import { Container } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
+import {
+  withAuthUserTokenSSR,
+  withAuthUser,
+  AuthAction,
+} from "next-firebase-auth"
 
-import Layout from "../../components/Layout"
 import LoginForm, { Values } from "../../components/LoginForm"
 import useStyles from "../../styles"
 import { useState } from "react"
 import { useRouter } from "next/router"
-import TopBar from "../../components/Layout/TopBar"
 
 const SignIn: NextPage = () => {
   const classes = useStyles()
@@ -20,28 +23,20 @@ const SignIn: NextPage = () => {
   )
 
   const onSubmit = async (values: Values) => {
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    })
-
-    if (response.ok) {
+    try {
+      console.log(values)
       router.push("/")
-    } else {
-      const { message } = await response.json()
-      setErrorMsg(message)
+    } catch (error) {
+      setErrorMsg(error.message)
       setSuccessMsg(undefined)
     }
   }
 
   return (
-    <Layout>
+    <>
       <Head>
         <title>Mastered | Sign In</title>
       </Head>
-      <TopBar />
-
       <Container maxWidth="sm" className={classes.container}>
         {errorMsg && (
           <Alert variant="filled" severity="error">
@@ -55,7 +50,7 @@ const SignIn: NextPage = () => {
         )}
         <LoginForm onSubmit={onSubmit} />
       </Container>
-    </Layout>
+    </>
   )
 }
 
@@ -70,4 +65,8 @@ const successMessage = (key: string): string => {
   }
 }
 
-export default SignIn
+export const getServerSideProps = withAuthUserTokenSSR({
+  // whenAuthed: AuthAction.REDIRECT_TO_APP,
+})()
+
+export default withAuthUser({ whenAuthed: AuthAction.REDIRECT_TO_APP })(SignIn)

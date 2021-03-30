@@ -1,4 +1,4 @@
-import React, { FC, useState, MouseEvent } from "react"
+import React, { FC, useState, MouseEvent, useContext } from "react"
 import Link from "next/link"
 import { createStyles, makeStyles } from "@material-ui/core/styles"
 import AppBar from "@material-ui/core/AppBar"
@@ -9,8 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem"
 import Menu from "@material-ui/core/Menu"
 import { Container } from "@material-ui/core"
 import { useRouter } from "next/router"
-
-import { User } from "../../models/user"
+import { UserContext } from "../../lib/context"
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -26,15 +25,12 @@ const useStyles = makeStyles(() =>
   })
 )
 
-interface Props {
-  user?: User
-}
-
-const TopBar: FC<Props> = ({ user }) => {
+const TopBar: FC = () => {
   const router = useRouter()
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+  const { user } = useContext(UserContext)
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -46,7 +42,6 @@ const TopBar: FC<Props> = ({ user }) => {
 
   const onSignOutClick = async (_e: MouseEvent) => {
     setAnchorEl(null)
-    await fetch("/api/auth/logout")
     router.push("/auth/sign_in")
   }
 

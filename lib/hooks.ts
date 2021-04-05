@@ -1,6 +1,6 @@
-export function useUser() {
-  const user = {}
-  const loggedIn = false
+import { AuthContext } from "../contexts/AuthContext"
+import { useContext } from "react";
 
-  return { user, loggedIn }
+export function useAuth() {
+  return useContext(AuthContext)
 }

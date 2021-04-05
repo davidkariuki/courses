@@ -2,11 +2,6 @@ import Head from "next/head"
 import { NextPage } from "next"
 import { Container } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
-import {
-  withAuthUserTokenSSR,
-  withAuthUser,
-  AuthAction,
-} from "next-firebase-auth"
 
 import LoginForm, { Values } from "../../components/LoginForm"
 import useStyles from "../../styles"
@@ -65,8 +60,7 @@ const successMessage = (key: string): string => {
   }
 }
 
-export const getServerSideProps = withAuthUserTokenSSR({
-  // whenAuthed: AuthAction.REDIRECT_TO_APP,
-})()
+export const getServerSideProps = {
+}
 
-export default withAuthUser({ whenAuthed: AuthAction.REDIRECT_TO_APP })(SignIn)
+export default SignIn

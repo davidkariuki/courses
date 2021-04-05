@@ -1,31 +1,25 @@
-import { init } from "next-firebase-auth"
+import admin from "firebase-admin"
+import firebase from "firebase/app"
+import "firebase/auth"
 
-const initAuth = () => {
-  init({
-    authPageURL: "/auth/sign_in",
-    appPageURL: "/",
-    loginAPIEndpoint: "/api/auth/login",
-    logoutAPIEndpoint: "/api/auth/logout",
-    firebaseClientInitConfig: {
-      apiKey: "AIzaSyADSCRRKDSo1JYfYD9pVZd83ASP8N0cUvs",
-      authDomain: "courses-686d0.firebaseapp.com",
-      projectId: "courses-686d0",
-    },
-    cookies: {
-      name: "courses.mastered.com",
-      keys: [
-        process.env.COOKIE_SECRET_CURRENT,
-        process.env.COOKIE_SECRET_PREVIOUS,
-      ],
-      httpOnly: true,
-      maxAge: 12 * 60 * 60 * 24 * 1000, // twelve days
-      overwrite: true,
-      path: "/",
-      sameSite: "strict",
-      secure: process.env.NODE_ENV === "development" ? false : true,
-      signed: true,
-    },
+const serviceAccount = require(process.env.FIREBASE_PRIVATE_KEY as string)
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
   })
 }
 
-export default initAuth
+if (typeof window !== "undefined" && !firebase.apps.length) {
+  firebase.initializeApp({
+    apiKey: "AIzaSyADSCRRKDSo1JYfYD9pVZd83ASP8N0cUvs",
+    authDomain: "courses-686d0.firebaseapp.com",
+    projectId: "courses-686d0",
+    storageBucket: "courses-686d0.appspot.com",
+    messagingSenderId: "257897652422",
+    appId: "1:257897652422:web:4eadf7854f82f7952b37c7",
+    measurementId: "G-1471PTCN33"
+  })
+}
+
+export { admin, firebase }

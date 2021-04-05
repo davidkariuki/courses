@@ -1,11 +1,6 @@
 import Head from "next/head"
 import { NextPage } from "next"
 import { Container } from "@material-ui/core"
-import {
-  withAuthUserTokenSSR,
-  withAuthUser,
-  AuthAction,
-} from "next-firebase-auth"
 
 import HomePage from "../components/HomePage"
 import useStyles from "../styles"
@@ -30,16 +25,12 @@ const Home: NextPage<Props> = ({ courses }) => {
   )
 }
 
-export const getServerSideProps = withAuthUserTokenSSR({
-  // whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-})(async ({}) => {
+export const getServerSideProps = async () => {
   const courses: Course[] = []
 
   return {
     props: { courses },
   }
-})
+}
 
-export default withAuthUser({
-  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(Home)
+export default Home

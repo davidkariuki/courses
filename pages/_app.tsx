@@ -7,9 +7,7 @@ import CssBaseline from "@material-ui/core/CssBaseline"
 import theme from "../theme"
 import Layout from "../components/Layout"
 import TopBar from "../components/Layout/TopBar"
-import initAuth from "../lib/firebase"
-
-initAuth()
+import { AuthProvider } from "../contexts/AuthContext"
 
 export default function MyApp(props: AppProps) {
   const { Component, pageProps } = props
@@ -22,19 +20,21 @@ export default function MyApp(props: AppProps) {
   }, [])
 
   return (
-    <ThemeProvider theme={theme}>
-      <Layout>
-        <Head>
-          <title>Mastered</title>
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width"
-          />
-        </Head>
-        <TopBar />
-        <CssBaseline />
-        <Component {...pageProps} />
-      </Layout>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider theme={theme}>
+        <Layout>
+          <Head>
+            <title>Mastered</title>
+            <meta
+              name="viewport"
+              content="minimum-scale=1, initial-scale=1, width=device-width"
+            />
+          </Head>
+          <TopBar />
+          <CssBaseline />
+          <Component {...pageProps} />
+        </Layout>
+      </ThemeProvider>
+    </AuthProvider>
   )
 }
